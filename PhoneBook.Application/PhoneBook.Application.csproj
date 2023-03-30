@@ -5,5 +5,26 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
+	
+	<ItemGroup>
+	<PackageReference Include="FluentValidation" Version="11.5.1" />
+	<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.1" />
+	<PackageReference Include="MediatR" Version="12.0.1" />
+	<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
+	<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <Folder Include="Commands\CreateLocationReport\" />
+	  <Folder Include="Commands\CreateContactInfo\" />
+	  <Folder Include="Queries\GetAllPhoneBook\" />
+	  <Folder Include="Queries\GetPhoneBookById\" />
+	  <Folder Include="Queries\GetReportStatusById\" />
+	  <Folder Include="Queries\GetReportDetailById\" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <ProjectReference Include="..\PhoneBook.Infrastructure\PhoneBook.Infrastructure.csproj" />
+	</ItemGroup>
+	
 </Project>

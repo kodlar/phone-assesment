@@ -33,12 +33,14 @@ namespace PhoneBook.Infrastructure.Data
                         {
                             new Domain.Entities.EmailInfo()
                             {
+                                Id = Guid.NewGuid().ToString(),
                                 Email = "hasan.pekmez@gmail.com",
                                 IsDeleted = false,
                                 IsSelected = true
                             },
                             new Domain.Entities.EmailInfo()
                             {
+                                Id = Guid.NewGuid().ToString(),
                                 Email = "hasanpekmez@yahoo.com",
                                 IsDeleted = false,
                                 IsSelected = false
@@ -48,6 +50,7 @@ namespace PhoneBook.Infrastructure.Data
                         {
                             new Domain.Entities.PhoneInfo()
                             {
+                                Id = Guid.NewGuid().ToString(),
                                 CountryCode = 1,
                                 IsDeleted = false,
                                 IsSelected = true,
@@ -65,6 +68,7 @@ namespace PhoneBook.Infrastructure.Data
                     LastName = "Terim",
                     Contact = new Domain.Entities.ContactInfo()
                     {
+
                         Address = "4635 Greenwood Rd",
                         City = "Shreveport",
                         Country = "USA",   
@@ -72,6 +76,7 @@ namespace PhoneBook.Infrastructure.Data
                         {
                             new Domain.Entities.EmailInfo()
                             {
+                                Id = Guid.NewGuid().ToString(),
                                 Email = "mehmetterim@gmail.com",
                                 IsDeleted = false,
                                 IsSelected = true
@@ -81,6 +86,7 @@ namespace PhoneBook.Infrastructure.Data
                         {
                             new Domain.Entities.PhoneInfo()
                             {
+                                Id = Guid.NewGuid().ToString(),
                                 CountryCode = 1,
                                 IsDeleted = false,
                                 IsSelected = true,
@@ -90,6 +96,7 @@ namespace PhoneBook.Infrastructure.Data
                             },
                             new Domain.Entities.PhoneInfo()
                             {
+                                Id = Guid.NewGuid().ToString(),
                                 CountryCode = 1,
                                 IsDeleted = false,
                                 IsSelected = true,
