@@ -42,14 +42,14 @@
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
-        Task CreateAsync(Domain.Entities.PhoneBook product);
+        Task CreateAsync(Domain.Entities.PhoneBook phoneBook);
         
         /// <summary>
         /// Rehberdeki ilgili öğeyi güncelle
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
-        Task<bool> UpdateAsync(Domain.Entities.PhoneBook product);
+        Task<bool> UpdateAsync(Domain.Entities.PhoneBook phoneBook);
 
         /// <summary>
         /// Rehberden kişiyi kaldır
