@@ -13,6 +13,7 @@ namespace PhoneBook.Domain.Entities
         public string LastName { get; set; }
         public string Company { get; set; }
         public ContactInfo? Contact { get; set; }
+        public bool IsDeleted { get; set; }
 
     }
 }

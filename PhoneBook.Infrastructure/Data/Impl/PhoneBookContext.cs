@@ -9,14 +9,17 @@ namespace PhoneBook.Infrastructure.Data.Impl
         public PhoneBookContext(IPhoneBookDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionStrings);
-            Console.WriteLine("ConnectionString:" + settings.ConnectionStrings);
+            //Console.WriteLine("ConnectionString:" + settings.ConnectionStrings);
             var database = client.GetDatabase(settings.DatabaseName);
-            Console.WriteLine("DatabaseName:" + settings.DatabaseName);
+            //Console.WriteLine("DatabaseName:" + settings.DatabaseName);
             PhoneBooks = database.GetCollection<Domain.Entities.PhoneBook>(settings.CollectionName);
-            Console.WriteLine("PhoneBooksCollectionName:" + settings.CollectionName);
-            PhoneBookContextSeed.SeedData(Products);
+            PhoneBookReports = database.GetCollection<Domain.Entities.PhoneBookReports>(settings.ReportCollectionName);
+            //Console.WriteLine("PhoneBooksCollectionName:" + settings.CollectionName);
+            PhoneBookContextSeed.SeedData(PhoneBooks);
+            PhoneBookReportContextSeed.SeedData(PhoneBookReports);
         }
 
         public IMongoCollection<Domain.Entities.PhoneBook> PhoneBooks { get; }
+        public IMongoCollection<Domain.Entities.PhoneBookReports> PhoneBookReports { get; }
     }
 }

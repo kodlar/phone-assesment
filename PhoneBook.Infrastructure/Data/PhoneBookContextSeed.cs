@@ -12,6 +12,7 @@ namespace PhoneBook.Infrastructure.Data
                 phoneBooksCollection.InsertManyAsync(GetConfigurePhoneBooks());
             }
 
+
         }
 
         private static IEnumerable<Domain.Entities.PhoneBook> GetConfigurePhoneBooks()
@@ -86,6 +87,15 @@ namespace PhoneBook.Infrastructure.Data
                                 PhoneNumber = "3186363367",
                                 Type = Domain.Enums.PhoneEnum.Mobile
 
+                            },
+                            new Domain.Entities.PhoneInfo()
+                            {
+                                CountryCode = 1,
+                                IsDeleted = false,
+                                IsSelected = true,
+                                PhoneNumber = "3182368381",
+                                Type = Domain.Enums.PhoneEnum.Mobile
+
                             }
                         }
 
@@ -114,7 +124,7 @@ namespace PhoneBook.Infrastructure.Data
                         {
                             new Domain.Entities.PhoneInfo()
                             {
-                                CountryCode = 1,
+                                CountryCode = 49,
                                 IsDeleted = false,
                                 IsSelected = true,
                                 PhoneNumber = "061518708170",
