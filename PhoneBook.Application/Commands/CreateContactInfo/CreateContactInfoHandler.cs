@@ -29,7 +29,7 @@ namespace PhoneBook.Application.Commands.CreateContactInfo
                         Country = request.ContactInfo.Country,
                     };
 
-                    if (request.ContactInfo.Email.Any())
+                    if (request.ContactInfo.Email != null && request.ContactInfo.Email.Any())
                     {
                         foreach (var item in request.ContactInfo.Email)
                         {
@@ -60,7 +60,77 @@ namespace PhoneBook.Application.Commands.CreateContactInfo
                         }
                     }
 
-                    if (request.ContactInfo.PhoneNumber.Any())
+                    if (request.ContactInfo.PhoneNumber != null && request.ContactInfo.PhoneNumber.Any())
+                    {
+                        foreach (var item in request.ContactInfo.PhoneNumber)
+                        {
+                            if (phoneBookItem.Contact.PhoneNumber == null)
+                            {
+                                phoneBookItem.Contact.PhoneNumber = new List<Domain.Entities.PhoneInfo>()
+                                {
+                                    new Domain.Entities.PhoneInfo()
+                                     {
+                                    IsSelected = item.IsSelected,
+                                    PhoneNumber = item.PhoneNumber,
+                                    CountryCode = item.CountryCode,
+                                    Id = Guid.NewGuid().ToString(),
+                                    IsDeleted = false,
+                                    Type = item.Type
+                                        }
+                                };
+                            }
+                            else
+                            {
+                                phoneBookItem.Contact.PhoneNumber?.Add(new Domain.Entities.PhoneInfo()
+                                {
+                                    IsSelected = item.IsSelected,
+                                    PhoneNumber = item.PhoneNumber,
+                                    CountryCode = item.CountryCode,
+                                    Id = Guid.NewGuid().ToString(),
+                                    IsDeleted = false,
+                                    Type = item.Type
+                                });
+                            }
+
+                        }
+                    }
+
+                    response.Result = await _phoneBookRepository.UpdateAsync(phoneBookItem);
+                }
+                else
+                {
+                    if (request.ContactInfo.Email != null && request.ContactInfo.Email.Any())
+                    {
+                        foreach (var item in request.ContactInfo.Email)
+                        {
+                            if (phoneBookItem.Contact.Email == null)
+                            {
+                                phoneBookItem.Contact.Email = new List<Domain.Entities.EmailInfo>()
+                                {
+                                            new Domain.Entities.EmailInfo()
+                                        {
+                                            IsSelected = item.IsSelected,
+                                            Email = item.Email,
+                                            Id = Guid.NewGuid().ToString(),
+                                            IsDeleted = false
+                                        }
+                                };
+                            }
+                            else
+                            {
+                                phoneBookItem.Contact.Email?.Add(new Domain.Entities.EmailInfo()
+                                {
+                                    IsSelected = item.IsSelected,
+                                    Email = item.Email,
+                                    Id = Guid.NewGuid().ToString(),
+                                    IsDeleted = false
+                                });
+                            }
+
+                        }
+                    }
+
+                    if (request.ContactInfo.PhoneNumber != null && request.ContactInfo.PhoneNumber.Any())
                     {
                         foreach (var item in request.ContactInfo.PhoneNumber)
                         {

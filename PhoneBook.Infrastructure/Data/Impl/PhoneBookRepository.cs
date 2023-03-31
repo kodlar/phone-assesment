@@ -75,10 +75,15 @@ namespace PhoneBook.Infrastructure.Data.Impl
             {
                 foreach (var lstItem in lst)
                 {
-                    var item = new Domain.Dto.EmailInfoDto();
-                    item.Email = lstItem.Email;
-                    item.IsSelected = lstItem.IsSelected;
-                    retlst.Add(item);
+                    if(lstItem.IsDeleted == false)
+                    {
+                        var item = new Domain.Dto.EmailInfoDto();
+                        item.Id = lstItem.Id;
+                        item.Email = lstItem.Email;
+                        item.IsSelected = lstItem.IsSelected;
+                        retlst.Add(item);
+                    }
+                    
                 }
             }
 
@@ -92,12 +97,17 @@ namespace PhoneBook.Infrastructure.Data.Impl
             {
                 foreach (var lstItem in lst)
                 {
-                    var item = new Domain.Dto.PhoneInfoDto();
-                    item.PhoneNumber = lstItem.PhoneNumber;
-                    item.CountryCode = lstItem.CountryCode;
-                    item.Type = lstItem.Type;
-                    item.IsSelected = lstItem.IsSelected;
-                    retlst.Add(item);
+                    if(lstItem.IsDeleted == false)
+                    {
+                        var item = new Domain.Dto.PhoneInfoDto();
+                        item.Id = lstItem.Id;
+                        item.PhoneNumber = lstItem.PhoneNumber;
+                        item.CountryCode = lstItem.CountryCode;
+                        item.Type = lstItem.Type;
+                        item.IsSelected = lstItem.IsSelected;
+                        retlst.Add(item);
+                    }
+                    
                 }
             }
 

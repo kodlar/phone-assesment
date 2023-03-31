@@ -4,6 +4,7 @@ namespace PhoneBook.Domain.Dto
 {
     public class PhoneInfoDto
     {
+        public string Id { get; set; }
         public bool IsSelected { get; set; }
         public string PhoneNumber { get; set; }
         public int CountryCode { get; set; }  
