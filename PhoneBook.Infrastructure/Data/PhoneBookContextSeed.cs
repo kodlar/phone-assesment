@@ -15,7 +15,7 @@ namespace PhoneBook.Infrastructure.Data
 
         }
 
-        private static IEnumerable<Domain.Entities.PhoneBook> GetConfigurePhoneBooks()
+        public static IEnumerable<Domain.Entities.PhoneBook> GetConfigurePhoneBooks()
         {
             return new List<Domain.Entities.PhoneBook>()
             {
