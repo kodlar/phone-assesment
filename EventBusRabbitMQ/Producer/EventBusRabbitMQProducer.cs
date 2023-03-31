@@ -23,7 +23,7 @@ namespace EventBusRabbitMQ.Producer
             _retryCount = retryCount;
         }
 
-        public void Publish(string queueName, IEvent @event)
+        public bool Publish(string queueName, IEvent @event)
         {
             if (!_persistentConnection.IsConnected)
             {
@@ -41,33 +41,40 @@ namespace EventBusRabbitMQ.Producer
             //Queue olduğu için IModel tipinden dönen bir nesneye ihtiyacım var.
             using (var channel = _persistentConnection.CreateModel())
             {
-                channel.QueueDeclare(queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
-                var message = JsonConvert.SerializeObject(@event);
-                var body = Encoding.UTF8.GetBytes(message);
-
-                policy.Execute(() =>
+                if (channel != null)
                 {
-                    IBasicProperties properties = channel.CreateBasicProperties();
-                    properties.Persistent = true;
-                    properties.DeliveryMode = 2;
+                    channel.QueueDeclare(queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
+                    var message = JsonConvert.SerializeObject(@event);
+                    var body = Encoding.UTF8.GetBytes(message);
 
-                    channel.ConfirmSelect();
-                    channel.BasicPublish(
-                        exchange: "",
-                        routingKey: queueName,
-                        mandatory: true,
-                        basicProperties: properties,
-                        body: body);
-
-                    channel.WaitForConfirmsOrDie();
-
-                    channel.BasicAcks += (sender, eventArgs) =>
+                    policy.Execute(() =>
                     {
-                        Console.WriteLine("Send RabbitMQ");
-                    };
+                        IBasicProperties properties = channel.CreateBasicProperties();
+                        properties.Persistent = true;
+                        properties.DeliveryMode = 2;
 
-                });
+                        channel.ConfirmSelect();
+                        channel.BasicPublish(
+                            exchange: "",
+                            routingKey: queueName,
+                            mandatory: true,
+                            basicProperties: properties,
+                            body: body);
+
+                        channel.WaitForConfirmsOrDie();
+
+                        channel.BasicAcks += (sender, eventArgs) =>
+                        {
+                            Console.WriteLine("Send RabbitMQ");
+                        };
+
+                    });
+                }
+
+              return channel != null ? true : false;
             }
+
+           
 
         }
     }

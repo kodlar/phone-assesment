@@ -16,49 +16,85 @@ namespace PhoneBook.Application.Commands.CreateContactInfo
         {
             var response = new CreateContactInfoResponse();
             var phoneBookItem = await _phoneBookRepository.GetPhoneBookItemByIdAsync(request.UserId);
-            
-            if(phoneBookItem == null)
+
+            if (phoneBookItem != null)
             {
-                if(phoneBookItem.Contact == null)
+                if (phoneBookItem.Contact == null)
                 {
 
                     phoneBookItem.Contact = new Domain.Entities.ContactInfo()
                     {
                         Address = request.ContactInfo.Address,
                         City = request.ContactInfo.City,
-                        Country = request.ContactInfo.Country,                        
+                        Country = request.ContactInfo.Country,
                     };
 
-                    if(request.ContactInfo.Email.Any())
+                    if (request.ContactInfo.Email.Any())
                     {
                         foreach (var item in request.ContactInfo.Email)
                         {
-                            phoneBookItem.Contact.Email.Add(new Domain.Entities.EmailInfo()
+                            if (phoneBookItem.Contact.Email == null)
                             {
-                                IsSelected = item.IsSelected,
-                                Email = item.Email,
-                                Id = Guid.NewGuid().ToString(),
-                                IsDeleted = false
-                            });
+                                phoneBookItem.Contact.Email = new List<Domain.Entities.EmailInfo>()
+                                {
+                                            new Domain.Entities.EmailInfo()
+                                        {
+                                            IsSelected = item.IsSelected,
+                                            Email = item.Email,
+                                            Id = Guid.NewGuid().ToString(),
+                                            IsDeleted = false
+                                        }
+                                };
+                            }
+                            else
+                            {
+                                phoneBookItem.Contact.Email?.Add(new Domain.Entities.EmailInfo()
+                                {
+                                    IsSelected = item.IsSelected,
+                                    Email = item.Email,
+                                    Id = Guid.NewGuid().ToString(),
+                                    IsDeleted = false
+                                });
+                            }
+
                         }
                     }
 
-                    if(request.ContactInfo.PhoneNumber.Any())
+                    if (request.ContactInfo.PhoneNumber.Any())
                     {
                         foreach (var item in request.ContactInfo.PhoneNumber)
                         {
-                            phoneBookItem.Contact.PhoneNumber.Add(new Domain.Entities.PhoneInfo()
+                            if (phoneBookItem.Contact.PhoneNumber == null)
                             {
-                                IsSelected = item.IsSelected,
-                                PhoneNumber = item.PhoneNumber,
-                                CountryCode = item.CountryCode,
-                                Id = Guid.NewGuid().ToString(),
-                                IsDeleted = false,
-                                Type = item.Type
-                            });
+                                phoneBookItem.Contact.PhoneNumber = new List<Domain.Entities.PhoneInfo>()
+                                {
+                                    new Domain.Entities.PhoneInfo()
+                                     {
+                                    IsSelected = item.IsSelected,
+                                    PhoneNumber = item.PhoneNumber,
+                                    CountryCode = item.CountryCode,
+                                    Id = Guid.NewGuid().ToString(),
+                                    IsDeleted = false,
+                                    Type = item.Type
+                                        }
+                                };
+                            }
+                            else
+                            {
+                                phoneBookItem.Contact.PhoneNumber?.Add(new Domain.Entities.PhoneInfo()
+                                {
+                                    IsSelected = item.IsSelected,
+                                    PhoneNumber = item.PhoneNumber,
+                                    CountryCode = item.CountryCode,
+                                    Id = Guid.NewGuid().ToString(),
+                                    IsDeleted = false,
+                                    Type = item.Type
+                                });
+                            }
+
                         }
                     }
-                   
+
                     response.Result = await _phoneBookRepository.UpdateAsync(phoneBookItem);
                 }
             }

@@ -33,6 +33,7 @@ namespace PhoneBook.Application.Commands.CreateLocationReport
             {
                 var eventMessage = new ReportCreateEvent();
                 eventMessage.TraceId = traceReportId;
+                
                 _eventBus.Publish(EventBusConstants.ReportCreateQueue, eventMessage);
             }
             response.TraceId = traceReportId;

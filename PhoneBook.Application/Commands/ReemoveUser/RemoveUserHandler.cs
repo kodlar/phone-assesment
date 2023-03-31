@@ -15,7 +15,7 @@ namespace PhoneBook.Application.Commands.ReemoveUser
         public async Task<RemoveUserResponse> Handle(RemoveUserRequest request, CancellationToken cancellationToken)
         {
             var response = new RemoveUserResponse();
-
+           
 
             var phoneBookItem = await this.phoneBookRepository.GetPhoneBookItemByIdAsync(request.UserId);
 
