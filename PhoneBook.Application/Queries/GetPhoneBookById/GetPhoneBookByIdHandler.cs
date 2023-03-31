@@ -22,14 +22,14 @@ namespace PhoneBook.Application.Queries.GetPhoneBookById
                 response.LastName = dbResult.LastName;
                 response.Id = dbResult.Id;
                 response.Company = dbResult.Company;
-                response.Contact = new Domain.Dto.ContactInfoDto()
+                response.Contact = dbResult.Contact != null ?  new Domain.Dto.ContactInfoDto()
                 {
                     Address = dbResult.Contact.Address,
                     City = dbResult.Contact.City,
                     Country = dbResult.Contact.Country,
                     Email = phoneBookRepository.EmailList(dbResult.Contact?.Email),
                     PhoneNumber = phoneBookRepository.PhoneList(dbResult.Contact?.PhoneNumber),
-                };
+                } : null;
             }
             return response;
         }

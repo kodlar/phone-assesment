@@ -20,7 +20,7 @@ namespace PhoneBook.Application.Queries.GetReportStatusById
 
             if (dbResult != null)
             {
-                response.Status = dbResult.Status;
+                response.Status = dbResult.Status.ToString();
                 response.CreatedAt = dbResult.CreatedAt;
                 response.Id = dbResult.Id;
             }

@@ -23,7 +23,7 @@ namespace PhoneBook.Application.Queries.GetReportDetailById
                 response.TraceReportId = dbResult.TraceReportId;
                 response.CreatedAt = dbResult.CreatedAt;    
                 response.UpdatedAt = dbResult.UpdatedAt;
-                response.Status = dbResult.Status;                
+                response.Status = dbResult.Status.ToString();                
             }
             return response;
         }

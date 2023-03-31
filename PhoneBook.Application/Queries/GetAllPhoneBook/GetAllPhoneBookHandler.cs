@@ -24,20 +24,22 @@ namespace PhoneBook.Application.Queries.GetAllPhoneBook
                     FirstName = item.FirstName,
                     LastName = item.LastName,
                     Company = item.Company,
-                    Contact = new Domain.Dto.ContactInfoDto()
+                    Contact = item.Contact != null ? new Domain.Dto.ContactInfoDto()
                     {
                         Address = item.Contact?.Address,
                         City = item.Contact?.City,
                         Country = item.Contact?.Country,
                         Email = _phoneBookRepository.EmailList(item.Contact?.Email),
                         PhoneNumber = _phoneBookRepository.PhoneList(item.Contact?.PhoneNumber),
-                    }
-                });
-            }
+                    } : null
+
+
+                }); 
+        }
 
             return response;
         }
 
-        
-    }
+
+}
 }

@@ -11,6 +11,6 @@ namespace PhoneBook.Application.Queries.GetReportStatusById
     {
         public string Id { get; set; }
         public DateTime CreatedAt { get; set; }
-        public ReportEnum Status { get; set; }
+        public string Status { get; set; }
     }
 }
