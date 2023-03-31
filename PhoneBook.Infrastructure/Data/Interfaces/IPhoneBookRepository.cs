@@ -1,4 +1,6 @@
-﻿namespace PhoneBook.Infrastructure.Data.Interfaces
+﻿using PhoneBook.Domain.Entities;
+
+namespace PhoneBook.Infrastructure.Data.Interfaces
 {
     public interface IPhoneBookRepository
     {
@@ -20,19 +22,19 @@
         /// </summary>
         /// <param name="report"></param>
         /// <returns></returns>
-        Task CreateReportAsync(Domain.Entities.PhoneBookReports report);
+        Task<bool> CreateReportAsync(PhoneBookReports report);
         /// <summary>
         /// UUID • Raporun Talep Edildiği Tarih • Rapor Durumu (Hazırlanıyor, Tamamlandı)
         /// </summary>
         /// <param name="location"></param>
         /// <returns></returns>
-        Task<Domain.Entities.PhoneBookReports> GetPhoneBookLocationReportStatusAsync(string location);
+        Task<PhoneBookReports> GetPhoneBookLocationReportStatusAsync(string traceId);
         /// <summary>
         /// • Konum Bilgisi • O konumda yer alan rehbere kayıtlı kişi sayısı • O konumda yer alan rehbere kayıtlı telefon numarası sayısı
         /// </summary>
         /// <param name="mongodbId"></param>
         /// <returns></returns>
-        Task<Domain.Entities.PhoneBookReports> GetPhoneBookReportDetailAsync(string traceId);
+        Task<PhoneBookReports> GetPhoneBookReportDetailAsync(string traceId);
 
 
         //Sistemin oluşturduğu bir raporun detay bilgilerinin getirilmesi
@@ -57,6 +59,19 @@
         /// <param name="id"></param>
         /// <returns></returns>
         Task<bool> DeleteAsync(string id);
-        
+        /// <summary>
+        /// Domainden dtoya emaillistesi
+        /// </summary>
+        /// <param name="lst"></param>
+        /// <returns></returns>
+        List<Domain.Dto.EmailInfoDto> EmailList(List<EmailInfo> lst);
+        /// <summary>
+        /// Domainden dtoya phonelistesi
+        /// </summary>
+        /// <param name="lst"></param>
+        /// <returns></returns>
+        List<Domain.Dto.PhoneInfoDto> PhoneList(List<Domain.Entities.PhoneInfo> lst);
+
+
     }
 }

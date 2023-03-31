@@ -18,9 +18,10 @@ namespace PhoneBook.Infrastructure.Data.Impl
            await _phoneBookContext.PhoneBooks.InsertOneAsync(phoneBook);
         }
 
-        public async Task CreateReportAsync(PhoneBookReports report)
+        public async Task<bool> CreateReportAsync(PhoneBookReports report)
         {
             await _phoneBookContext.PhoneBookReports.InsertOneAsync(report);
+            return true;
         }
 
         public async Task<bool> DeleteAsync(string id)
@@ -50,9 +51,9 @@ namespace PhoneBook.Infrastructure.Data.Impl
             return await _phoneBookContext.PhoneBooks.Find(p => !p.IsDeleted).ToListAsync();
         }
 
-        public async Task<PhoneBookReports> GetPhoneBookLocationReportStatusAsync(string location)
+        public async Task<PhoneBookReports> GetPhoneBookLocationReportStatusAsync(string traceId)
         {
-            return await _phoneBookContext.PhoneBookReports.Find(p => p.Report.Location == location).FirstOrDefaultAsync();
+            return await _phoneBookContext.PhoneBookReports.Find(p => p.TraceReportId == traceId).FirstOrDefaultAsync();
         }
 
         public async Task<PhoneBookReports> GetPhoneBookReportDetailAsync(string traceId)
@@ -64,6 +65,34 @@ namespace PhoneBook.Infrastructure.Data.Impl
         {
             var updateResult = await _phoneBookContext.PhoneBooks.ReplaceOneAsync(filter: g => g.Id == phoneBook.Id, replacement: phoneBook);
             return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
+        }
+
+        public List<Domain.Dto.EmailInfoDto> EmailList(List<Domain.Entities.EmailInfo> lst)
+        {
+            List<Domain.Dto.EmailInfoDto> retlst = new List<Domain.Dto.EmailInfoDto>();
+            foreach (var lstItem in lst)
+            {
+                var item = new Domain.Dto.EmailInfoDto();
+                item.Email = lstItem.Email;
+                item.IsSelected = lstItem.IsSelected;
+                retlst.Add(item);
+            }
+            return retlst;
+        }
+
+        public List<Domain.Dto.PhoneInfoDto> PhoneList(List<Domain.Entities.PhoneInfo> lst)
+        {
+            List<Domain.Dto.PhoneInfoDto> retlst = new List<Domain.Dto.PhoneInfoDto>();
+            foreach (var lstItem in lst)
+            {
+                var item = new Domain.Dto.PhoneInfoDto();
+                item.PhoneNumber = lstItem.PhoneNumber;
+                item.CountryCode = lstItem.CountryCode;
+                item.Type = lstItem.Type;
+                item.IsSelected = lstItem.IsSelected;
+                retlst.Add(item);
+            }
+            return retlst;
         }
     }
 }

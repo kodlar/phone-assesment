@@ -8,6 +8,10 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["PhoneBook.Assement.API/PhoneBook.API.csproj", "PhoneBook.Assement.API/"]
+COPY ["PhoneBook.Application/PhoneBook.Application.csproj", "PhoneBook.Application/"]
+COPY ["EventBusRabbitMQ/EventBusRabbitMQ.csproj", "EventBusRabbitMQ/"]
+COPY ["PhoneBook.Infrastructure/PhoneBook.Infrastructure.csproj", "PhoneBook.Infrastructure/"]
+COPY ["PhoneBook.Domain/PhoneBook.Domain.csproj", "PhoneBook.Domain/"]
 RUN dotnet restore "PhoneBook.Assement.API/PhoneBook.API.csproj"
 COPY . .
 WORKDIR "/src/PhoneBook.Assement.API"

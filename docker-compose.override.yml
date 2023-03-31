@@ -1,0 +1,33 @@
+version: '3.4'
+
+services:
+   sourcingdb:
+    container_name: sourcingdb
+    restart: always
+    volumes:
+       - ${WEBAPP_STORAGE_HOME}/site:/data/db
+    ports:
+      - "27017:27017"
+
+   rabbitmq:
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+   phonebook.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - "PhoneBookDatabaseSettings:ConnectionStrings=mongodb://sourcingdb:27017"
+      - "EventBus:HostName=rabbitmq"
+    depends_on:
+      - sourcingdb
+      - rabbitmq
+    ports:
+      - "9080:80"
+      - "9081:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
