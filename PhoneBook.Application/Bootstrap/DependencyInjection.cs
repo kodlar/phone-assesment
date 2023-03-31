@@ -8,6 +8,7 @@ using PhoneBook.Application.PipelineBehaviours;
 using RabbitMQ.Client;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
+using System.Diagnostics;
 
 namespace PhoneBook.Application.Bootstrap
 {
@@ -26,6 +27,7 @@ namespace PhoneBook.Application.Bootstrap
 
             services.AddSingleton<IRabbitMQPersistentConnection>(sp => {
                 var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
+                Debug.WriteLine(configuration["EventBus:HostName"]);
                 var factory = new ConnectionFactory()
                 {
                     HostName = configuration["EventBus:HostName"]

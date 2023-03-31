@@ -127,8 +127,9 @@ app.MapPost("/CreateContactInfo", async ([FromBody] CreateContactInfoRequest req
     return response;
 });
 
-app.MapPost("/CreateLocationReport", async ([FromBody] CreateLocationReportRequest request, [FromServices] IMediator _mediatr, CancellationToken token) =>
+app.MapPost("/CreateLocationReport", async ([FromServices] IMediator _mediatr, CancellationToken token) =>
 {
+    var request = new CreateLocationReportRequest();
     var result = await _mediatr.Send(request, token);
     var response = new ResponseDto<CreateLocationReportResponse>();
     response.IsSuccess = true;
