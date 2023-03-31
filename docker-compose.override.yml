@@ -32,3 +32,12 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+   worker:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development    
+      - "PhoneBookDatabaseSettings:ConnectionStrings=mongodb://sourcingdb:27017"
+      - "EventBus:HostName=rabbitmq"
+    depends_on:
+      - sourcingdb
+      - rabbitmq

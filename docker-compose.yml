@@ -13,3 +13,9 @@ services:
       context: .
       dockerfile: PhoneBook.Assement.API/Dockerfile
 
+   worker:
+    image : ${DOCKER_REGISTRY-}rabbitmqlistenerworker
+    build:
+     context: .
+     dockerfile: WorkerReportService/PhoneBookWorkerService/Dockerfile
+
