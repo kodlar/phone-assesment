@@ -67,7 +67,7 @@ namespace PhoneBook.Infrastructure.Data.Impl
             return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
         }
 
-        public List<Domain.Dto.EmailInfoDto> EmailList(List<Domain.Entities.EmailInfo> lst)
+        public List<Domain.Dto.EmailInfoDto> EmailList(List<EmailInfo> lst)
         {
             List<Domain.Dto.EmailInfoDto> retlst = new List<Domain.Dto.EmailInfoDto>();
 
@@ -85,7 +85,7 @@ namespace PhoneBook.Infrastructure.Data.Impl
             return retlst;
         }
 
-        public List<Domain.Dto.PhoneInfoDto> PhoneList(List<Domain.Entities.PhoneInfo> lst)
+        public List<Domain.Dto.PhoneInfoDto> PhoneList(List<PhoneInfo> lst)
         {
             List<Domain.Dto.PhoneInfoDto> retlst = new List<Domain.Dto.PhoneInfoDto>();
             if (lst.Any())

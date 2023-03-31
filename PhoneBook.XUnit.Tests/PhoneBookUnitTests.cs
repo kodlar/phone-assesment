@@ -9,6 +9,13 @@ using PhoneBook.Application.Commands.CreateLocationReport;
 using PhoneBook.Application.Commands.CreateUser;
 using PhoneBook.Application.Commands.ReemoveUser;
 using PhoneBook.Application.Commands.RemoveContactInfo;
+using PhoneBook.Application.Queries.GetAllPhoneBook;
+using PhoneBook.Application.Queries.GetPhoneBookById;
+using PhoneBook.Application.Queries.GetReportDetailById;
+using PhoneBook.Application.Queries.GetReportStatusById;
+using PhoneBook.Domain.Dto;
+using PhoneBook.Domain.Entities;
+using PhoneBook.Infrastructure.Data.Impl;
 using PhoneBook.Infrastructure.Data.Interfaces;
 using RabbitMQ.Client;
 
@@ -20,6 +27,7 @@ namespace PhoneBook.XUnit.Tests
         private readonly Mock<EventBusRabbitMQProducer> _eventBus;
         private readonly Mock<IRabbitMQPersistentConnection> _persistentConnection;
         private readonly Mock<ILogger<EventBusRabbitMQProducer>> _logger;
+        private readonly Mock<IPhoneBookContext> _context;
         private readonly int _retryCount;
         public PhoneBookUnitTests()
         {
@@ -28,6 +36,7 @@ namespace PhoneBook.XUnit.Tests
             _persistentConnection = new();
             _logger = new();
             _eventBus = new(_persistentConnection.Object, _logger.Object, _retryCount);
+            _context = new();
         }
         [Fact]
         public async Task CreateUserHandler_Should_Return_True()
@@ -122,13 +131,17 @@ namespace PhoneBook.XUnit.Tests
         public async Task CreateLocationHandler_Should_Return_TraceId()
         {
             var request = new CreateLocationReportRequest();
+
             var reportResponse = new CreateLocationReportResponse();
+
             var traceReportId = Guid.NewGuid().ToString();
 
-            _phoneBookRepositoryMock.Setup(x => x.CreateReportAsync(It.IsAny<Domain.Entities.PhoneBookReports>())).ReturnsAsync(true);
+            _phoneBookRepositoryMock.Setup(x => x.CreateReportAsync(It.IsAny<Domain.Entities.PhoneBookReports>())).Returns(Task.FromResult(true));
 
             var eventMessage = new ReportCreateEvent();
+
             eventMessage.TraceId = traceReportId;
+
             _persistentConnection.Setup(z => z.CreateModel()).Returns(It.IsAny<IModel>());
            
             var handler = new CreateLocationReportHandler(_phoneBookRepositoryMock.Object,_eventBus.Object);
@@ -186,10 +199,138 @@ namespace PhoneBook.XUnit.Tests
             var handler = new CreateContactInfoHandler(_phoneBookRepositoryMock.Object);
 
             var response = await handler.Handle(request, default);
+
             _phoneBookRepositoryMock.Verify(y => y.UpdateAsync(It.IsAny<Domain.Entities.PhoneBook>()), Times.Once);
+
             response.Result.Should().BeTrue();
 
         }
 
+
+        [Fact]
+        public async Task GetAllPhoneBookHandler_Should_Return_ZeroItem()
+        {
+            var request = new GetAllPhoneBookRequest();
+
+            var response = new GetAllPhoneBookResponse();
+            
+            _phoneBookRepositoryMock.Setup(z => z.GetPhoneBookListAsync()).ReturnsAsync(It.IsAny<IEnumerable<Domain.Entities.PhoneBook>>());
+
+            var handler = new GetAllPhoneBookHandler(_phoneBookRepositoryMock.Object);
+
+            var handlerResult = handler.Handle(request, default);
+
+            _phoneBookRepositoryMock.Verify(x => x.GetPhoneBookListAsync(), Times.Once);
+
+            response.Count.Should().Be(0);
+
+        }
+
+        [Fact]
+        public async Task GetPhoneBookByIdHandler_Should_Return_NotBeNull()
+        {
+            var request = new GetPhoneBookByIdRequest();
+
+            _phoneBookRepositoryMock.Setup(z => z.GetPhoneBookItemByIdAsync(request.Id)).ReturnsAsync(It.IsAny<Domain.Entities.PhoneBook>());
+
+            var handler = new GetPhoneBookByIdHandler(_phoneBookRepositoryMock.Object);
+
+            var handlerResult = handler.Handle(request, default);
+
+            handlerResult.Should().NotBeNull();
+
+        }
+
+        [Fact]
+        public async Task GetReportDetailByIdHandler_Should_Return_GetReportDetailByIdResponse()
+        {
+            var request = new GetReportDetailByIdRequest();
+
+            _phoneBookRepositoryMock.Setup(z => z.GetPhoneBookReportDetailAsync(request.TraceId)).ReturnsAsync(It.IsAny<PhoneBookReports>());
+
+            var handler = new GetReportDetailByIdHandler(_phoneBookRepositoryMock.Object);
+
+            var handlerResult = handler.Handle(request, default);
+
+            handlerResult.Should().NotBeNull();
+
+        }
+
+        [Fact]
+        public async Task GetReportStatusByIdHandler_Should_Return_GetReportStatusByIdResponse()
+        {
+            var request = new GetReportStatusByIdRequest();
+
+            _phoneBookRepositoryMock.Setup(z => z.GetPhoneBookLocationReportStatusAsync(request.TraceId)).ReturnsAsync(It.IsAny<Domain.Entities.PhoneBookReports>());
+
+            var handler = new GetReportStatusByIdHandler(_phoneBookRepositoryMock.Object);
+
+            var handlerResult = handler.Handle(request, default);
+
+            handlerResult.Should().NotBeNull();
+
+        }
+
+        [Fact]
+        public async Task EmailList_Should_Return_ExpectedListItem()
+        {
+            List<EmailInfo> lst = new List<EmailInfo>();
+            lst.Add(new EmailInfo() { Email = "test@test.com", Id = Guid.NewGuid().ToString(), IsDeleted = false, IsSelected = true });
+            lst.Add(new EmailInfo() { Email = "tes2@test.com", Id = Guid.NewGuid().ToString(), IsDeleted = false, IsSelected = false });
+            _phoneBookRepositoryMock.Setup(x => x.EmailList(lst)).Returns(new List<Domain.Dto.EmailInfoDto>()
+            {
+                new Domain.Dto.EmailInfoDto()
+                {
+                    Email = "test@test.com",
+                    IsSelected = true
+                },
+                new Domain.Dto.EmailInfoDto()
+                {
+                    Email = "test2@test.com",
+                    IsSelected = false
+                }
+            });
+
+            IPhoneBookRepository repo = new PhoneBookRepository(_context.Object);
+
+            var result = repo.EmailList(lst);
+
+            result.Count().Should().Be(2);
+           
+        }
+
+        [Fact]
+        public async Task PhoneList_Should_Return_ExpectedListItem()
+        {
+            List<PhoneInfo> lst = new List<PhoneInfo>();
+            
+            lst.Add(new PhoneInfo() { CountryCode = 90, IsSelected = true , Type = Domain.Enums.PhoneEnum.Mobile, IsDeleted = false, PhoneNumber = "5365150123", Id = Guid.NewGuid().ToString()});
+            lst.Add(new PhoneInfo() { CountryCode = 90, IsSelected = true, Type = Domain.Enums.PhoneEnum.Mobile, IsDeleted = false, PhoneNumber = "5351235689", Id = Guid.NewGuid().ToString() });
+          
+            _phoneBookRepositoryMock.Setup(x => x.PhoneList(lst)).Returns(new List<Domain.Dto.PhoneInfoDto>()
+            {
+                new Domain.Dto.PhoneInfoDto()
+                {
+                    CountryCode = 90,
+                    PhoneNumber = "5365150123",
+                    Type = Domain.Enums.PhoneEnum.Work,
+                    IsSelected = true
+                },
+                new Domain.Dto.PhoneInfoDto()
+                {
+                      CountryCode = 90,
+                    PhoneNumber = "5351235689",
+                    Type = Domain.Enums.PhoneEnum.Work,
+                    IsSelected = false
+                }
+            }); ;
+
+            IPhoneBookRepository repo = new PhoneBookRepository(_context.Object);
+
+            var result = repo.PhoneList(lst);
+
+            result.Count().Should().Be(2);
+
+        }
     }
 }

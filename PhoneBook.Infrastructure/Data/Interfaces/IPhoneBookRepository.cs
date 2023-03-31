@@ -70,7 +70,7 @@ namespace PhoneBook.Infrastructure.Data.Interfaces
         /// </summary>
         /// <param name="lst"></param>
         /// <returns></returns>
-        List<Domain.Dto.PhoneInfoDto> PhoneList(List<Domain.Entities.PhoneInfo> lst);
+        List<Domain.Dto.PhoneInfoDto> PhoneList(List<PhoneInfo> lst);
 
 
     }
