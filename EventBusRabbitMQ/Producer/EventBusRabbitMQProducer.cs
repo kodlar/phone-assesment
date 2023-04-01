@@ -43,7 +43,7 @@ namespace EventBusRabbitMQ.Producer
             {
                 if (channel != null)
                 {
-                    channel.QueueDeclare(queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
+                    channel.QueueDeclare(queueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
                     var message = JsonConvert.SerializeObject(@event);
                     var body = Encoding.UTF8.GetBytes(message);
 

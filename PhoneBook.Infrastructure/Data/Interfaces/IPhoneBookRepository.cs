@@ -35,7 +35,12 @@ namespace PhoneBook.Infrastructure.Data.Interfaces
         /// <param name="mongodbId"></param>
         /// <returns></returns>
         Task<PhoneBookReports> GetPhoneBookReportDetailAsync(string traceId);
-
+        /// <summary>
+        /// Raporu güncelle
+        /// </summary>
+        /// <param name="phoneBookReports"></param>
+        /// <returns></returns>
+        Task<bool> UpdateAsync(PhoneBookReports phoneBookReports);
 
         //Sistemin oluşturduğu bir raporun detay bilgilerinin getirilmesi
 

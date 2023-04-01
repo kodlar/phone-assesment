@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using PhoneBook.API.Middlewares;
 using PhoneBook.Application.Bootstrap;
 using PhoneBook.Application.Commands.CreateContactInfo;
 using PhoneBook.Application.Commands.CreateLocationReport;
@@ -16,19 +17,16 @@ using PhoneBook.Infrastructure.Data.Impl;
 using PhoneBook.Infrastructure.Data.Interfaces;
 using PhoneBook.Infrastructure.Settings;
 
+
 var builder = WebApplication.CreateBuilder(args);
-
-
 ConfigurationManager configuration = builder.Configuration;
 IWebHostEnvironment environment = builder.Environment;
 
 // Add services to the container.
 builder.Services.AddSingleton<IPhoneBookDatabaseSettings>(sp => sp.GetRequiredService<IOptions<PhoneBookDatabaseSettings>>().Value);
 builder.Services.Configure<PhoneBookDatabaseSettings>(configuration.GetSection(nameof(PhoneBookDatabaseSettings)));
-
 builder.Services.AddScoped<IPhoneBookContext, PhoneBookContext>();
 builder.Services.AddTransient<IPhoneBookRepository, PhoneBookRepository>();
-
 builder.Services.AddApplication(configuration);
 
 // Add services to the container.
@@ -37,6 +35,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+//live ortamda bunu developmenta çek
+app.UseMigrations();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -117,7 +117,6 @@ app.MapGet("/GetReportStatusById/{id}", async ([FromRoute] string id, [FromServi
     return response;
 });
 
-
 app.MapPost("/CreateContactInfo", async ([FromBody] CreateContactInfoRequest request, [FromServices] IMediator _mediatr, CancellationToken token) =>
 {
     var result = await _mediatr.Send(request, token);
@@ -163,9 +162,7 @@ app.MapDelete("/RemoveContactInfo", async ([FromBody] RemoveContactInfoRequest r
         response.Data = result;
         return response;
     })
-
 .WithOpenApi();
-
 
 app.Run();
 

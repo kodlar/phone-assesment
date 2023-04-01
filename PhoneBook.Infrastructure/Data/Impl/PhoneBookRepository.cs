@@ -15,25 +15,25 @@ namespace PhoneBook.Infrastructure.Data.Impl
 
         public async Task CreateAsync(Domain.Entities.PhoneBook phoneBook)
         {
-            await _phoneBookContext.PhoneBooks.InsertOneAsync(phoneBook);
+            await _phoneBookContext.GetCollection<Domain.Entities.PhoneBook>(nameof(Domain.Entities.PhoneBook).ToLower()).InsertOneAsync(phoneBook);
         }
 
         public async Task<bool> CreateReportAsync(PhoneBookReports report)
         {
-            await _phoneBookContext.PhoneBookReports.InsertOneAsync(report);
+            await _phoneBookContext.GetCollection<PhoneBookReports>(nameof(PhoneBookReports).ToLower()).InsertOneAsync(report);
             return true;
         }
 
         public async Task<bool> DeleteAsync(string id)
         {
             var filter = Builders<Domain.Entities.PhoneBook>.Filter.Eq(m => m.Id, id);
-            DeleteResult deleteResult = await _phoneBookContext.PhoneBooks.DeleteOneAsync(filter);
+            DeleteResult deleteResult = await _phoneBookContext.GetCollection<Domain.Entities.PhoneBook>(nameof(Domain.Entities.PhoneBook).ToLower()).DeleteOneAsync(filter);
             return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
         }
 
         public async Task<Domain.Entities.PhoneBook> GetPhoneBookItemByIdAsync(string id)
         {
-            return await _phoneBookContext.PhoneBooks.Find(p => p.Id == id).FirstOrDefaultAsync();
+            return await _phoneBookContext.GetCollection<Domain.Entities.PhoneBook>(nameof(Domain.Entities.PhoneBook).ToLower()).Find(p => p.Id == id).FirstOrDefaultAsync();
         }
 
 
@@ -43,27 +43,33 @@ namespace PhoneBook.Infrastructure.Data.Impl
             var filter1 = Builders<Domain.Entities.PhoneBook>.Filter.ElemMatch(p => p.FirstName, name);
             var filter2 = Builders<Domain.Entities.PhoneBook>.Filter.Eq("IsDeleted", false);
             var filter = Builders<Domain.Entities.PhoneBook>.Filter.And(filter1, filter2);
-            return await _phoneBookContext.PhoneBooks.Find(filter).ToListAsync();
+            return await _phoneBookContext.GetCollection<Domain.Entities.PhoneBook>(nameof(Domain.Entities.PhoneBook).ToLower()).Find(filter).ToListAsync();
         }
 
         public async Task<IEnumerable<Domain.Entities.PhoneBook>> GetPhoneBookListAsync()
         {
-            return await _phoneBookContext.PhoneBooks.Find(p => !p.IsDeleted).ToListAsync();
+            return await _phoneBookContext.GetCollection<Domain.Entities.PhoneBook>(nameof(Domain.Entities.PhoneBook).ToLower()).Find(p => !p.IsDeleted).ToListAsync();
         }
 
         public async Task<PhoneBookReports> GetPhoneBookLocationReportStatusAsync(string traceId)
         {
-            return await _phoneBookContext.PhoneBookReports.Find(p => p.TraceReportId == traceId).FirstOrDefaultAsync();
+            return await _phoneBookContext.GetCollection<PhoneBookReports>(nameof(PhoneBookReports).ToLower()).Find(p => p.TraceReportId == traceId).FirstOrDefaultAsync();
         }
 
         public async Task<PhoneBookReports> GetPhoneBookReportDetailAsync(string traceId)
         {
-            return await _phoneBookContext.PhoneBookReports.Find(p => p.TraceReportId == traceId).FirstOrDefaultAsync();
+            return await _phoneBookContext.GetCollection<PhoneBookReports>(nameof(PhoneBookReports).ToLower()).Find(p => p.TraceReportId == traceId).FirstOrDefaultAsync();
         }
 
         public async Task<bool> UpdateAsync(Domain.Entities.PhoneBook phoneBook)
         {
-            var updateResult = await _phoneBookContext.PhoneBooks.ReplaceOneAsync(filter: g => g.Id == phoneBook.Id, replacement: phoneBook);
+            var updateResult = await _phoneBookContext.GetCollection<Domain.Entities.PhoneBook>(nameof(Domain.Entities.PhoneBook).ToLower()).ReplaceOneAsync(filter: g => g.Id == phoneBook.Id, replacement: phoneBook);
+            return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
+        }
+
+        public async Task<bool> UpdateAsync(PhoneBookReports phoneBookReports)
+        {
+            var updateResult = await _phoneBookContext.GetCollection<Domain.Entities.PhoneBookReports>(nameof(Domain.Entities.PhoneBookReports).ToLower()).ReplaceOneAsync(filter: g => g.Id == phoneBookReports.Id, replacement: phoneBookReports);
             return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
         }
 

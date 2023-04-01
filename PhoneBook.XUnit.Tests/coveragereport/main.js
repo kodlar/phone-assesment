@@ -230,7 +230,7 @@ var assemblies = [
     "name": "PhoneBook.Application",
     "classes": [
       { "name": "PhoneBook.Application.Bootstrap.DependencyInjection", "rp": "PhoneBook.Application_DependencyInjection.html", "cl": 0, "ucl": 44, "cal": 44, "tl": 70, "cb": 0, "tb": 8, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
-      { "name": "PhoneBook.Application.Commands.CreateContactInfo.CreateContactInfoHandler", "rp": "PhoneBook.Application_CreateContactInfoHandler.html", "cl": 62, "ucl": 20, "cal": 82, "tl": 104, "cb": 14, "tb": 20, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
+      { "name": "PhoneBook.Application.Commands.CreateContactInfo.CreateContactInfoHandler", "rp": "PhoneBook.Application_CreateContactInfoHandler.html", "cl": 62, "ucl": 83, "cal": 145, "tl": 174, "cb": 15, "tb": 44, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "PhoneBook.Application.Commands.CreateContactInfo.CreateContactInfoRequest", "rp": "PhoneBook.Application_CreateContactInfoRequest.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "PhoneBook.Application.Commands.CreateContactInfo.CreateContactInfoResponse", "rp": "PhoneBook.Application_CreateContactInfoResponse.html", "cl": 1, "ucl": 0, "cal": 1, "tl": 7, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "PhoneBook.Application.Commands.CreateContactInfo.CreateContactInfoValidator", "rp": "PhoneBook.Application_CreateContactInfoValidator.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 13, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
@@ -248,20 +248,20 @@ var assemblies = [
       { "name": "PhoneBook.Application.Commands.RemoveContactInfo.RemoveContactInfoRequest", "rp": "PhoneBook.Application_RemoveContactInfoRequest.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "PhoneBook.Application.Commands.RemoveContactInfo.RemoveContactInfoResponse", "rp": "PhoneBook.Application_RemoveContactInfoResponse.html", "cl": 1, "ucl": 0, "cal": 1, "tl": 7, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "PhoneBook.Application.Commands.RemoveContactInfo.RemoveContactInfoValidator", "rp": "PhoneBook.Application_RemoveContactInfoValidator.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
-      { "name": "PhoneBook.Application.PipelineBehaviours.PerformanceBehavior<T1, T2>", "rp": "PhoneBook.Application_PerformanceBehavior_2.html", "cl": 0, "ucl": 20, "cal": 20, "tl": 44, "cb": 0, "tb": 4, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
-      { "name": "PhoneBook.Application.PipelineBehaviours.UnhandledExceptionBehavior<T1, T2>", "rp": "PhoneBook.Application_UnhandledExceptionBehavior_2.html", "cl": 0, "ucl": 16, "cal": 16, "tl": 39, "cb": 0, "tb": 2, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
-      { "name": "PhoneBook.Application.PipelineBehaviours.ValidationBehavior<T1, T2>", "rp": "PhoneBook.Application_ValidationBehavior_2.html", "cl": 0, "ucl": 15, "cal": 15, "tl": 33, "cb": 0, "tb": 6, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
+      { "name": "PhoneBook.Application.PipelineBehaviours.PerformanceBehavior<T1, T2>", "rp": "PhoneBook.Application_PerformanceBehavior_2.html", "cl": 13, "ucl": 7, "cal": 20, "tl": 44, "cb": 1, "tb": 4, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
+      { "name": "PhoneBook.Application.PipelineBehaviours.UnhandledExceptionBehavior<T1, T2>", "rp": "PhoneBook.Application_UnhandledExceptionBehavior_2.html", "cl": 8, "ucl": 8, "cal": 16, "tl": 39, "cb": 0, "tb": 2, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
+      { "name": "PhoneBook.Application.PipelineBehaviours.ValidationBehavior<T1, T2>", "rp": "PhoneBook.Application_ValidationBehavior_2.html", "cl": 8, "ucl": 7, "cal": 15, "tl": 33, "cb": 4, "tb": 6, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "PhoneBook.Application.Queries.GetAllPhoneBook.GetAllPhoneBookHandler", "rp": "PhoneBook.Application_GetAllPhoneBookHandler.html", "cl": 8, "ucl": 21, "cal": 29, "tl": 45, "cb": 0, "tb": 14, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "PhoneBook.Application.Queries.GetPhoneBookById.GetPhoneBookByIdHandler", "rp": "PhoneBook.Application_GetPhoneBookByIdHandler.html", "cl": 10, "ucl": 14, "cal": 24, "tl": 37, "cb": 1, "tb": 8, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "PhoneBook.Application.Queries.GetPhoneBookById.GetPhoneBookByIdRequest", "rp": "PhoneBook.Application_GetPhoneBookByIdRequest.html", "cl": 1, "ucl": 0, "cal": 1, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "PhoneBook.Application.Queries.GetPhoneBookById.GetPhoneBookByIdValidator", "rp": "PhoneBook.Application_GetPhoneBookByIdValidator.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "PhoneBook.Application.Queries.GetReportDetailById.GetReportDetailByIdHandler", "rp": "PhoneBook.Application_GetReportDetailByIdHandler.html", "cl": 10, "ucl": 8, "cal": 18, "tl": 31, "cb": 1, "tb": 2, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "PhoneBook.Application.Queries.GetReportDetailById.GetReportDetailByIdRequest", "rp": "PhoneBook.Application_GetReportDetailByIdRequest.html", "cl": 1, "ucl": 0, "cal": 1, "tl": 9, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
-      { "name": "PhoneBook.Application.Queries.GetReportDetailById.GetReportDetailByIdResponse", "rp": "PhoneBook.Application_GetReportDetailByIdResponse.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 15, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
+      { "name": "PhoneBook.Application.Queries.GetReportDetailById.GetReportDetailByIdResponse", "rp": "PhoneBook.Application_GetReportDetailByIdResponse.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 15, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "PhoneBook.Application.Queries.GetReportDetailById.GetReportDetailByIdValidator", "rp": "PhoneBook.Application_GetReportDetailByIdValidator.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "PhoneBook.Application.Queries.GetReportStatusById.GetReportStatusByIdHandler", "rp": "PhoneBook.Application_GetReportStatusByIdHandler.html", "cl": 10, "ucl": 5, "cal": 15, "tl": 31, "cb": 1, "tb": 2, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "PhoneBook.Application.Queries.GetReportStatusById.GetReportStatusByIdRequest", "rp": "PhoneBook.Application_GetReportStatusByIdRequest.html", "cl": 1, "ucl": 0, "cal": 1, "tl": 9, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
-      { "name": "PhoneBook.Application.Queries.GetReportStatusById.GetReportStatusByIdResponse", "rp": "PhoneBook.Application_GetReportStatusByIdResponse.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
+      { "name": "PhoneBook.Application.Queries.GetReportStatusById.GetReportStatusByIdResponse", "rp": "PhoneBook.Application_GetReportStatusByIdResponse.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "PhoneBook.Application.Queries.GetReportStatusById.GetReportStatusByIdValidator", "rp": "PhoneBook.Application_GetReportStatusByIdValidator.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
     ]},
   {
@@ -269,8 +269,8 @@ var assemblies = [
     "classes": [
       { "name": "PhoneBook.Domain.Dto.Api.ResponseDto<T>", "rp": "PhoneBook.Domain_ResponseDto_1.html", "cl": 4, "ucl": 12, "cal": 16, "tl": 32, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "PhoneBook.Domain.Dto.ContactInfoDto", "rp": "PhoneBook.Domain_ContactInfoDto.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
-      { "name": "PhoneBook.Domain.Dto.EmailInfoDto", "rp": "PhoneBook.Domain_EmailInfoDto.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 8, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
-      { "name": "PhoneBook.Domain.Dto.PhoneInfoDto", "rp": "PhoneBook.Domain_PhoneInfoDto.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 15, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
+      { "name": "PhoneBook.Domain.Dto.EmailInfoDto", "rp": "PhoneBook.Domain_EmailInfoDto.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 9, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
+      { "name": "PhoneBook.Domain.Dto.PhoneInfoDto", "rp": "PhoneBook.Domain_PhoneInfoDto.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "PhoneBook.Domain.Dto.QueryDto.GetAllPhoneBookResponseDto", "rp": "PhoneBook.Domain_GetAllPhoneBookResponseDto.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "PhoneBook.Domain.Entities.ContactInfo", "rp": "PhoneBook.Domain_ContactInfo.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "PhoneBook.Domain.Entities.EmailInfo", "rp": "PhoneBook.Domain_EmailInfo.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
@@ -282,9 +282,9 @@ var assemblies = [
   {
     "name": "PhoneBook.Infrastructure",
     "classes": [
-      { "name": "PhoneBook.Infrastructure.Data.Impl.PhoneBookContext", "rp": "PhoneBook.Infrastructure_PhoneBookContext.html", "cl": 11, "ucl": 3, "cal": 14, "tl": 26, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
-      { "name": "PhoneBook.Infrastructure.Data.Impl.PhoneBookRepository", "rp": "PhoneBook.Infrastructure_PhoneBookRepository.html", "cl": 36, "ucl": 32, "cal": 68, "tl": 107, "cb": 8, "tb": 12, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
-      { "name": "PhoneBook.Infrastructure.Data.PhoneBookContextSeed", "rp": "PhoneBook.Infrastructure_PhoneBookContextSeed.html", "cl": 129, "ucl": 5, "cal": 134, "tl": 148, "cb": 0, "tb": 2, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
+      { "name": "PhoneBook.Infrastructure.Data.Impl.PhoneBookContext", "rp": "PhoneBook.Infrastructure_PhoneBookContext.html", "cl": 13, "ucl": 6, "cal": 19, "tl": 36, "cb": 2, "tb": 2, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
+      { "name": "PhoneBook.Infrastructure.Data.Impl.PhoneBookRepository", "rp": "PhoneBook.Infrastructure_PhoneBookRepository.html", "cl": 44, "ucl": 32, "cal": 76, "tl": 117, "cb": 12, "tb": 16, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
+      { "name": "PhoneBook.Infrastructure.Data.PhoneBookContextSeed", "rp": "PhoneBook.Infrastructure_PhoneBookContextSeed.html", "cl": 127, "ucl": 7, "cal": 134, "tl": 148, "cb": 0, "tb": 2, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "PhoneBook.Infrastructure.Data.PhoneBookReportContextSeed", "rp": "PhoneBook.Infrastructure_PhoneBookReportContextSeed.html", "cl": 29, "ucl": 7, "cal": 36, "tl": 50, "cb": 0, "tb": 2, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "PhoneBook.Infrastructure.Settings.PhoneBookDatabaseSettings", "rp": "PhoneBook.Infrastructure_PhoneBookDatabaseSettings.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
     ]},
@@ -295,9 +295,15 @@ var metrics = [{ "name": "Cyclomatic complexity", "abbreviation": "cc", "explana
 var historicCoverageExecutionTimes = [];
 
 var riskHotspotMetrics = [
+      { "name": "Cyclomatic complexity", "explanationUrl": "https://en.wikipedia.org/wiki/Cyclomatic_complexity" },
 ];
 
 var riskHotspots = [
+  {
+    "assembly": "PhoneBook.Application", "class": "PhoneBook.Application.Commands.CreateContactInfo.CreateContactInfoHandler", "reportPath": "PhoneBook.Application_CreateContactInfoHandler.html", "methodName": "Handle()", "methodShortName": "Handle()", "fileIndex": 0, "line": 16,
+    "metrics": [
+      { "value": 44, "exceeded": true },
+    ]},
 ];
 
 var branchCoverageAvailable = true;

@@ -1,8 +1,11 @@
-﻿using EventBusRabbitMQ;
+﻿using Amazon.Runtime;
+using EventBusRabbitMQ;
 using EventBusRabbitMQ.Events;
 using EventBusRabbitMQ.Producer;
 using FluentAssertions;
+using FluentValidation;
 using FluentValidation.TestHelper;
+using MediatR;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using Moq;
@@ -11,6 +14,7 @@ using PhoneBook.Application.Commands.CreateLocationReport;
 using PhoneBook.Application.Commands.CreateUser;
 using PhoneBook.Application.Commands.ReemoveUser;
 using PhoneBook.Application.Commands.RemoveContactInfo;
+using PhoneBook.Application.PipelineBehaviours;
 using PhoneBook.Application.Queries.GetAllPhoneBook;
 using PhoneBook.Application.Queries.GetPhoneBookById;
 using PhoneBook.Application.Queries.GetReportDetailById;
@@ -24,6 +28,8 @@ using PhoneBook.Infrastructure.Data.Impl;
 using PhoneBook.Infrastructure.Data.Interfaces;
 using PhoneBook.Infrastructure.Settings;
 using RabbitMQ.Client;
+using System.Linq.Expressions;
+using System.Runtime;
 
 namespace PhoneBook.XUnit.Tests
 {
@@ -35,15 +41,24 @@ namespace PhoneBook.XUnit.Tests
         private readonly Mock<ILogger<EventBusRabbitMQProducer>> _logger;
         private readonly Mock<IPhoneBookContext> _context;
         private readonly int _retryCount;
+        private readonly Mock<ILogger<CreateContactInfoRequest>> _loggerContactInfo;
+
+        private Mock<IMongoDatabase> _mockDB;
+        private Mock<IMongoClient> _mockClient;
+
 
         public PhoneBookUnitTests()
         {
             _phoneBookRepositoryMock = new();
             _retryCount = 3;
             _persistentConnection = new();
+            _loggerContactInfo = new();
             _logger = new();
             _eventBus = new(_persistentConnection.Object, _logger.Object, _retryCount);
             _context = new();
+
+            _mockDB = new Mock<IMongoDatabase>();
+            _mockClient = new Mock<IMongoClient>();
 
         }
         [Fact]
@@ -359,28 +374,23 @@ namespace PhoneBook.XUnit.Tests
         }
 
         [Fact]
-        public async Task PhoneBookContext_ShouldCreate_Constructor_And_ThrowTimeoutException()
+        public async Task PhoneBookContext_ShouldCreate_Constructor_And_CollectionsNotBeNull()
         {
             IPhoneBookDatabaseSettings settings = new PhoneBookDatabaseSettings();
 
             settings.ConnectionStrings = "mongodb://sourcingdb:27017";
-            settings.CollectionName = "PhoneBooks";
-            settings.ReportCollectionName = "PhoneBookReports";
+            settings.CollectionName = "phonebbook";
+            settings.ReportCollectionName = "phonebookreports";
             settings.DatabaseName = "PhoneServiceMongoDb";
 
-            _context.Setup(x => x.PhoneBooks).Throws<System.TimeoutException>();
-            bool retval = false;
-            try
-            {
-                IPhoneBookContext sut = new PhoneBookContext(settings);
+            _mockClient.Setup(c => c.GetDatabase(settings.DatabaseName, null)).Returns(_mockDB.Object);
 
-            }
-            catch (TimeoutException ex)
-            {
-                retval = true;
+            var context = new PhoneBookContext(settings);
+            var phoneBook = context.GetCollection<Domain.Entities.PhoneBook>(settings.CollectionName);
+            var phoneBookReport = context.GetCollection<PhoneBookReports>(settings.ReportCollectionName);
 
-            }
-            retval.Should().BeTrue();
+            phoneBook.Should().NotBeNull();
+            phoneBookReport.Should().NotBeNull();
 
         }
 
@@ -474,7 +484,7 @@ namespace PhoneBook.XUnit.Tests
 
         }
 
-       
+
         [Fact]
         public void CreateContactInfoValidator_Should_Return_ErrorMessage()
         {
@@ -497,8 +507,8 @@ namespace PhoneBook.XUnit.Tests
             var validator = new CreateUserValidator();
             var request = new CreateUserRequest()
             {
-               FirstName = null,
-               LastName = "test"
+                FirstName = null,
+                LastName = "test"
             };
 
             var response = validator.TestValidate(request);
@@ -524,7 +534,7 @@ namespace PhoneBook.XUnit.Tests
 
         }
 
-       
+
 
         [Fact]
         public void GetReportDetailByIdValidator_Should_Return_ErrorMessage()
@@ -589,6 +599,165 @@ namespace PhoneBook.XUnit.Tests
 
 
         }
+
+        [Fact]
+        public void GetReportDetailByIdResponse_Should_ReturnLocation()
+        {
+            var response = new GetReportDetailByIdResponse();
+            response.Status = "";
+            response.CreatedAt = DateTime.Now;
+            response.UpdatedAt = DateTime.Now;
+            response.Id = Guid.NewGuid().ToString();
+            response.TraceReportId = Guid.NewGuid().ToString();
+            response.Report = new LocationReportItem() { Location = "istanbul", PersonCount = 1, PhoneNumberCount = 2 };
+
+            response.Report.Location.Should().Be("istanbul");
+
+
+        }
+
+        [Fact]
+        public void GetReportStatusByIdResponse_Should_ReturnNotNull()
+        {
+            var r = new GetReportStatusByIdResponse();
+            r.Id = Guid.NewGuid().ToString();
+            r.CreatedAt = DateTime.Now;
+            r.Status = string.Empty;
+            r.Should().NotBeNull();
+        }
+
+        [Fact]
+        public async Task PhoneBookContext_ShouldCreate_Constructor_And_SelectedCollectionReturnNull()
+        {
+            IPhoneBookDatabaseSettings settings = new PhoneBookDatabaseSettings();
+
+            settings.ConnectionStrings = "mongodb://sourcingdb:27017";
+            settings.CollectionName = "phonebbook";
+            settings.ReportCollectionName = "phonebookreports";
+            settings.DatabaseName = "PhoneServiceMongoDb";
+
+            _mockClient.Setup(c => c.GetDatabase(settings.DatabaseName, null)).Returns(_mockDB.Object);
+
+            var context = new PhoneBookContext(settings);
+            var phoneBook = context.GetCollection<Domain.Entities.PhoneBook>(string.Empty);
+
+            phoneBook.Should().BeNull();
+
+        }
+
+        [Fact]
+        public async Task PipelinePerformanceBehaviour_Check()
+        {
+            var request = new CreateContactInfoRequest();   
+            request.UserId = Guid.NewGuid().ToString();
+            request.ContactInfo = new ContactInfoDto()
+            {
+                Address = "tset",
+                City = "istanbul",
+                Country = "Türkiye",
+                Email = new List<EmailInfoDto>()
+                {
+                    new EmailInfoDto()
+                    {
+                        Email = "test@test.com",
+                        Id = "1",
+                        IsSelected = true
+                    }
+                },
+                PhoneNumber = new List<PhoneInfoDto>()
+                {
+                    new PhoneInfoDto()
+                    {
+                        IsSelected = true
+                    }
+                }
+            };
+            var response = new Mock<RequestHandlerDelegate<CreateContactInfoResponse>>();            
+            var re = new PerformanceBehavior<CreateContactInfoRequest, CreateContactInfoResponse>(_loggerContactInfo.Object);
+            var d = await re.Handle(request, response.Object, default);
+
+            d.Should().BeNull();
+
+        }
+
+        [Fact]
+        public async Task Pipeleline_UnhandledExceptionBehavior_Check()
+        {
+            var request = new CreateContactInfoRequest();
+            request.UserId = Guid.NewGuid().ToString();
+            request.ContactInfo = new ContactInfoDto()
+            {
+                Address = "tset",
+                City = "istanbul",
+                Country = "Türkiye",
+                Email = new List<EmailInfoDto>()
+                {
+                    new EmailInfoDto()
+                    {
+                        Email = "test@test.com",
+                        Id = "1",
+                        IsSelected = true
+                    }
+                },
+                PhoneNumber = new List<PhoneInfoDto>()
+                {
+                    new PhoneInfoDto()
+                    {
+                        IsSelected = true
+                    }
+                }
+            };
+            var response = new Mock<RequestHandlerDelegate<CreateContactInfoResponse>>();
+            var re = new UnhandledExceptionBehavior<CreateContactInfoRequest, CreateContactInfoResponse>(_loggerContactInfo.Object);
+            var d = await re.Handle(request,response.Object,default);
+            d.Should().BeNull();
+        }
+
+        [Fact]
+        public async Task Pipeline_ValidationBehavior_Return_Exception()
+        {
+            var request = new CreateContactInfoRequest();
+            request.UserId = Guid.NewGuid().ToString();
+            request.ContactInfo = new ContactInfoDto()
+            {
+                Address = "tset",
+                City = "istanbul",
+                Country = "Türkiye",
+                Email = new List<EmailInfoDto>()
+                {
+                    new EmailInfoDto()
+                    {
+                        Email = "test@test.com",
+                        Id = "1",
+                        IsSelected = true
+                    }
+                },
+                PhoneNumber = new List<PhoneInfoDto>()
+                {
+                    new PhoneInfoDto()
+                    {
+                        IsSelected = true
+                    }
+                }
+            };
+
+            var validators = new Mock<IEnumerable<IValidator<CreateContactInfoRequest>>>(); 
+
+            var response = new Mock<RequestHandlerDelegate<CreateContactInfoResponse>>();
+            var re = new ValidationBehavior<CreateContactInfoRequest, CreateContactInfoResponse>(validators.Object);
+            Exception ex = new Exception();
+            try
+            {
+                var d = await re.Handle(request, response.Object, default);
+            }
+            catch (Exception m)
+            {
+                ex = m;
+            }
+
+            ex.Message.Should().Be("Object reference not set to an instance of an object.");
+        }
+
 
     }
 }
