@@ -21,9 +21,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{DE24AB
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBusRabbitMQ", "EventBusRabbitMQ\EventBusRabbitMQ.csproj", "{44387ACC-E6E6-4C5C-9FD7-3A21EDEB533F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhoneBookWorkerService", "WorkerReportService\PhoneBookWorkerService\PhoneBookWorkerService.csproj", "{D980DACC-9EF1-4030-9E08-E7BFE64DC4D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhoneBookWorkerService", "WorkerReportService\PhoneBookWorkerService\PhoneBookWorkerService.csproj", "{D980DACC-9EF1-4030-9E08-E7BFE64DC4D7}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{C1FB99E2-9DEC-44AD-BEFD-8A5DD7456B27}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D2D81DF0-2447-455B-899B-F58313BD2CF6}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
