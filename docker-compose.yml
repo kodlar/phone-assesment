@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:   
+   sourcingdb:
+    image: mongo
+   
+   rabbitmq:
+    image: rabbitmq:3-management 
+    
+   phonebook.api:
+    image: ${DOCKER_REGISTRY-}phonebookapi
+    build:
+      context: .
+      dockerfile: PhoneBook.Assement.API/Dockerfile
+
+   worker:
+    image : ${DOCKER_REGISTRY-}rabbitmqlistenerworker
+    build:
+     context: .
+     dockerfile: WorkerReportService/PhoneBookWorkerService/Dockerfile
+
