@@ -50,7 +50,7 @@ namespace PhoneBookWorkerService
                 {
                     Task.Run(async () =>
                     {
-                        //await Task.Delay(5000);
+                        await Task.Delay(7000);
                         Console.WriteLine($"TraceId: {@event.TraceId}");
                         //Fetch record from mongodb
                         var record = await _phoneBookRepository.GetPhoneBookReportDetailAsync(@event.TraceId);
