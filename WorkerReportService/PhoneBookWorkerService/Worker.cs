@@ -57,6 +57,7 @@ namespace PhoneBookWorkerService
                         //process and update mongodb
                         record.Report = GenerateGenericReport();
                         record.UpdatedAt = DateTime.UtcNow;
+                        record.Status = PhoneBook.Domain.Enums.ReportEnum.Completed;
                         await _phoneBookRepository.UpdateAsync(record);
 
                         Console.WriteLine("rapor iþlemi tamamlandý");
