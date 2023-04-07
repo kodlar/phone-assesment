@@ -1,8 +1,7 @@
 ﻿using PhoneBook.Infrastructure.Data.Interfaces;
 using PhoneBook.Infrastructure.Settings;
 
-
-namespace PhoneBook.API.Middlewares
+namespace LocationReport.API.Middlewares
 {
     public class MigrationMiddleware
     {
@@ -11,7 +10,7 @@ namespace PhoneBook.API.Middlewares
 
         public MigrationMiddleware(RequestDelegate next, ILoggerFactory logFactory)
         {
-            _next = next;          
+            _next = next;
             _logger = logFactory.CreateLogger("MigrationMiddleware");
         }
 
@@ -21,12 +20,11 @@ namespace PhoneBook.API.Middlewares
 
             var _context = httpContext.RequestServices.GetRequiredService<IPhoneBookContext>();
             var _settings = httpContext.RequestServices.GetRequiredService<IPhoneBookDatabaseSettings>();
+           
+            var phoneBookReportCollection = _context.GetCollection<PhoneBook.Domain.Entities.PhoneBookReports>(_settings.ReportCollectionName);
 
-            var phoneBookCollection = _context.GetCollection<Domain.Entities.PhoneBook>(_settings.CollectionName);
-            
+            _context.SeedData(phoneBookReportCollection);
 
-            _context.SeedData(phoneBookCollection);
-            
             await _next(httpContext); // calling next middleware
 
         }

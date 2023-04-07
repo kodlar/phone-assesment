@@ -77,7 +77,7 @@ namespace PhoneBook.Infrastructure.Data.Impl
         {
             List<Domain.Dto.EmailInfoDto> retlst = new List<Domain.Dto.EmailInfoDto>();
 
-            if (lst.Any())
+            if (lst != null && lst.Any())
             {
                 foreach (var lstItem in lst)
                 {
@@ -99,7 +99,7 @@ namespace PhoneBook.Infrastructure.Data.Impl
         public List<Domain.Dto.PhoneInfoDto> PhoneList(List<PhoneInfo> lst)
         {
             List<Domain.Dto.PhoneInfoDto> retlst = new List<Domain.Dto.PhoneInfoDto>();
-            if (lst.Any())
+            if (lst != null && lst.Any())
             {
                 foreach (var lstItem in lst)
                 {
