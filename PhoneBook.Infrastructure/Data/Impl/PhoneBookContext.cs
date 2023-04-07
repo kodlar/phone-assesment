@@ -17,9 +17,20 @@ namespace PhoneBook.Infrastructure.Data.Impl
             _db = _mongoClient.GetDatabase(settings.DatabaseName);
         }
 
+
         public Task SeedData(IMongoCollection<Domain.Entities.PhoneBook> phoneBook, IMongoCollection<PhoneBookReports> phoneBookReport)
         {
             PhoneBookContextSeed.SeedData(phoneBook);
+            PhoneBookReportContextSeed.SeedData(phoneBookReport);
+            return Task.CompletedTask;
+        }
+        public Task SeedData(IMongoCollection<Domain.Entities.PhoneBook> phoneBook)
+        {
+            PhoneBookContextSeed.SeedData(phoneBook);            
+            return Task.CompletedTask;
+        }
+        public Task SeedData(IMongoCollection<PhoneBookReports> phoneBookReport)
+        {            
             PhoneBookReportContextSeed.SeedData(phoneBookReport);
             return Task.CompletedTask;
         }

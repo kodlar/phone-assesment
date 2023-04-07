@@ -16,7 +16,7 @@ using PhoneBook.Domain.Dto.Api;
 using PhoneBook.Infrastructure.Data.Impl;
 using PhoneBook.Infrastructure.Data.Interfaces;
 using PhoneBook.Infrastructure.Settings;
-
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
@@ -28,6 +28,10 @@ builder.Services.Configure<PhoneBookDatabaseSettings>(configuration.GetSection(n
 builder.Services.AddScoped<IPhoneBookContext, PhoneBookContext>();
 builder.Services.AddTransient<IPhoneBookRepository, PhoneBookRepository>();
 builder.Services.AddApplication(configuration);
+builder.Services
+.AddHttpClient("reportservice", client => {
+    client.BaseAddress = new Uri("http://LocationReport.API");
+});
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -77,9 +81,9 @@ app.MapGet("/GetAllPhoneBookById/{id}", async ([FromRoute] string id, [FromServi
     return response;
 });
 
-app.MapGet("/GetReportDetailById/{id}", async ([FromRoute] string id, [FromServices] IMediator _mediatr, CancellationToken token) =>
+app.MapGet("/GetReportDetailById/{id}", async ([FromRoute] string id, IHttpClientFactory _httpClientFactory, CancellationToken token) =>
 {
-    var request = new GetReportDetailByIdRequest();
+    
     var response = new ResponseDto<GetReportDetailByIdResponse>();
     if (string.IsNullOrEmpty(id))
     {
@@ -89,17 +93,18 @@ app.MapGet("/GetReportDetailById/{id}", async ([FromRoute] string id, [FromServi
         response.IsSuccess = true;
         return response;
     }
-    request.TraceId = id;
-    var result = await _mediatr.Send(request, token);
-
+    
+  
+    var httpClient = _httpClientFactory.CreateClient("reportservice");
+    var result = await httpClient.GetFromJsonAsync<ResponseDto<GetReportDetailByIdResponse>>("/GetReportDetailById/"+ id);
     response.IsSuccess = true;
-    response.Data = result;
+    response.Data = result.Data;
     return response;
 });
 
-app.MapGet("/GetReportStatusById/{id}", async ([FromRoute] string id, [FromServices] IMediator _mediatr, CancellationToken token) =>
+app.MapGet("/GetReportStatusById/{id}", async ([FromRoute] string id, IHttpClientFactory _httpClientFactory, CancellationToken token) =>
 {
-    var request = new GetReportStatusByIdRequest();
+   
     var response = new ResponseDto<GetReportStatusByIdResponse>();
     if (string.IsNullOrEmpty(id))
     {
@@ -109,11 +114,13 @@ app.MapGet("/GetReportStatusById/{id}", async ([FromRoute] string id, [FromServi
         response.IsSuccess = true;
         return response;
     }
-    request.TraceId = id;
-    var result = await _mediatr.Send(request, token);
+    
+
+    var httpClient = _httpClientFactory.CreateClient("reportservice");
+    var result = await httpClient.GetFromJsonAsync<ResponseDto<GetReportStatusByIdResponse>>("/GetReportStatusById/" + id);
 
     response.IsSuccess = true;
-    response.Data = result;
+    response.Data = result.Data;
     return response;
 });
 
@@ -126,13 +133,15 @@ app.MapPost("/CreateContactInfo", async ([FromBody] CreateContactInfoRequest req
     return response;
 });
 
-app.MapPost("/CreateLocationReport", async ([FromServices] IMediator _mediatr, CancellationToken token) =>
+app.MapPost("/CreateLocationReport", async (IHttpClientFactory _httpClientFactory, CancellationToken token) =>
 {
-    var request = new CreateLocationReportRequest();
-    var result = await _mediatr.Send(request, token);
-    var response = new ResponseDto<CreateLocationReportResponse>();
-    response.IsSuccess = true;
-    response.Data = result;
+    var response = new RootDto();
+    var httpClient = _httpClientFactory.CreateClient("reportservice");
+    
+    var result = await httpClient.PostAsync("/CreateLocationReport",null);
+    var responseBody = await result.Content.ReadAsStringAsync();
+    var obj = JsonSerializer.Deserialize<RootDto>(responseBody);
+    response = obj;
     return response;
 });
 

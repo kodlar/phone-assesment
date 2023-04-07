@@ -9,6 +9,15 @@ services:
     ports:
       - "27017:27017"
 
+   workerdb:
+    container_name: workerdb
+    restart: always
+    volumes:
+       - ${WEBAPP_STORAGE_HOME}/site:/data/db2
+    ports:
+      - "27018:27018"
+    command: [ "mongod" , "--port" , "27018" ]
+
    rabbitmq:
     container_name: rabbitmq
     restart: always
@@ -36,8 +45,24 @@ services:
    worker:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development    
-      - "PhoneBookDatabaseSettings:ConnectionStrings=mongodb://sourcingdb:27017"
+      - "PhoneBookDatabaseSettings:ConnectionStrings=mongodb://workerdb:27018"
       - "EventBus:HostName=rabbitmq"
     depends_on:
       - sourcingdb
       - rabbitmq
+
+   locationreport.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - "PhoneBookDatabaseSettings:ConnectionStrings=mongodb://workerdb:27018"
+      - "EventBus:HostName=rabbitmq"
+    depends_on:
+      - workerdb
+      - rabbitmq
+    ports:
+      - "8080:80"
+      - "8081:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro

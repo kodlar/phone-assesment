@@ -7,5 +7,7 @@ namespace PhoneBook.Infrastructure.Data.Interfaces
     {
         IMongoCollection<T> GetCollection<T>(string name);
         Task SeedData(IMongoCollection<Domain.Entities.PhoneBook> phoneBook, IMongoCollection<PhoneBookReports> phoneBookReport);
+        Task SeedData(IMongoCollection<Domain.Entities.PhoneBook> phoneBook);
+        Task SeedData(IMongoCollection<PhoneBookReports> phoneBookReport);
     }
 }
